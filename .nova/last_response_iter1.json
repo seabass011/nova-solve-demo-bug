@@ -1,0 +1,8 @@
+{
+  "diff": "--- a/src/sql_check_operator.py\n+++ b/src/sql_check_operator.py\n@@ -19,13 +19,13 @@\n     def execute(self, records):\n         \"\"\"Execute the SQL check\"\"\"\n         print(f\"[INFO] Executing SQL check: {self.sql}\")\n         print(f\"[INFO] Record: {records}\")\n         \n         if not records:\n             raise AirflowException(\"Test failed. Query returned no rows.\")\n-        elif not all(records):  # BUG: For dicts, this checks keys not values!\n+        elif isinstance(records, dict) and not all(records.values()):  # Fix: Check values for dicts\n             raise AirflowException(f\"Test failed. Query returned {records!r}\")\n         \n         print(\"[INFO] Success.\")\n         return \"Success\"",
+  "usage": {
+    "prompt_tokens": 1097,
+    "completion_tokens": 163,
+    "total_tokens": 1260
+  }
+}
