@@ -23,7 +23,7 @@ class SQLCheckOperator:
         
         if not records:
             raise AirflowException("Test failed. Query returned no rows.")
-        elif not all(records):  # BUG: For dicts, this checks keys not values!
+        elif isinstance(records, dict) and not all(records.values()):  # Fix: Check values for dicts
             raise AirflowException(f"Test failed. Query returned {records!r}")
         
         print("[INFO] Success.")
